@@ -67,7 +67,8 @@ def download_audio(link):
 
 def get_transcription(link):
     audio_file = download_audio(link)
-    aai.settings.api_key = 'fe50dbc6e9854a509d83af9ebf969314'
+    load_dotenv()
+    aai.settings.api_key = os.getenv('AAI_API_KEY')
 
     transcriber = aai.Transcriber()
     transcript = transcriber.transcribe(audio_file)
