@@ -11,6 +11,8 @@ import os
 from pytube import YouTube
 import assemblyai as aai
 import openai
+from dotenv import load_dotenv
+import os
 # Create your views here.
 @login_required
 def index(request):
@@ -73,8 +75,8 @@ def get_transcription(link):
     return transcript.text
 
 def generate_blog_from_transcription(transcript):
-    OPENAI_API_KEY = "sk-proj-IBNsaJfUAoRYPgGWAnSFT3BlbkFJjJjVGDYq6UyXkXRMH6UW"
-    openai.api_key = OPENAI_API_KEY
+    load_dotenv()  # take environment variables from .env.
+    openai.api_key = os.getenv('OPENAI_API_KEY')
     prompt = f"Based on the following transcript from a YouTube video, write a comprehensive blog article, write it based on the transcipt, but do not make it look like a youtube video, make it look like a proper blog article: \n\n{transcript}\n\nArticle:"
     response = openai.chat.completions.create(
             model="gpt-3.5-turbo-1106",  # Assuming you use an available GPT model
