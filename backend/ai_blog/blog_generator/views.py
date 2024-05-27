@@ -29,12 +29,14 @@ def generate_blog(request):
             return JsonResponse({'error': 'Invalid data sent'}, status=400)
 
         title = yt_title(yt_link)
-
+        print(title)
         transcription = get_transcription(yt_link)
+        print(transcription)
         if not transcription:
             return JsonResponse({'error': 'failed to get transcipt'}, status=500)
         
         blog_content = generate_blog_from_transcription(transcription)
+        print(blog_content)
         if not blog_content:
             return JsonResponse({'error': 'failed to generate blog content'}, status=500)
 
@@ -44,7 +46,7 @@ def generate_blog(request):
             youtube_link = yt_link,
             generated_content = blog_content,
         )
-
+        print(new_blog_article)
         new_blog_article.save()
 
         return JsonResponse({'content': blog_content})
@@ -72,7 +74,7 @@ def get_transcription(link):
 
     transcriber = aai.Transcriber()
     transcript = transcriber.transcribe(audio_file)
-
+    print(transcript.text)
     return transcript.text
 
 def generate_blog_from_transcription(transcript):
